@@ -9,7 +9,8 @@ data_dim = 1
 num_classes = 578
 
 batch = 64
-epoch = 20
+epoch = 1
+time = "0813_01"
 
 x_train = np.loadtxt('data_0813/x_train.txt', delimiter=',')
 x_val = np.loadtxt('data_0813/x_value.txt', delimiter=',')
@@ -49,8 +50,6 @@ model.add(Dense(num_classes, activation='softmax'))
 model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
-
-time = "0813_01"
 
 hist = model.fit(x_train, y_train,
                  batch_size=batch, epochs=epoch)

@@ -1,0 +1,15 @@
+pydev debugger: process 8132 is connecting
+
+Using TensorFlow backend.
+Traceback (most recent call last):
+  File "C:\Program Files\JetBrains\PyCharm 2017.2\helpers\pydev\pydevd.py", line 1599, in <module>
+    globals = debugger.run(setup['file'], None, None, is_module)
+  File "C:\Program Files\JetBrains\PyCharm 2017.2\helpers\pydev\pydevd.py", line 1026, in run
+    pydev_imports.execfile(file, globals, locals)  # execute the script
+  File "C:\Program Files\JetBrains\PyCharm 2017.2\helpers\pydev\_pydev_imps\_pydev_execfile.py", line 18, in execfile
+    exec(compile(contents+"\n", file, 'exec'), glob, loc)
+  File "C:/Users/32131/OneDrive/SyncWithHome/LSTM/Hello World.py", line 15, in <module>
+    x_val = np.loadtxt('data_0812/x_value.txt', delimiter=',')
+  File "C:\Users\32131\Anaconda3\envs\py-keras\lib\site-packages\numpy\lib\npyio.py", line 1021, in loadtxt
+    % line_num)
+ValueError: Wrong number of columns at line 1325

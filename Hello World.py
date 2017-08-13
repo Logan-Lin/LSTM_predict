@@ -4,17 +4,27 @@ from keras.utils.np_utils import to_categorical
 import numpy as np
 from keras.utils import plot_model
 
-timesteps = 16
+timesteps = 8
 data_dim = 1
 num_classes = 578
 
 batch = 64
 epoch = 20
 
-x_train = np.loadtxt('data_0812/x_train.txt', delimiter=',')
-x_val = np.loadtxt('data_0812/x_value.txt', delimiter=',')
-y_train = np.loadtxt('data_0812/y_train.txt', delimiter=',')
-y_val = np.loadtxt('data_0812/y_value.txt', delimiter=',')
+x_train = np.loadtxt('data_0813/x_train.txt', delimiter=',')
+x_val = np.loadtxt('data_0813/x_value.txt', delimiter=',')
+y_train = np.loadtxt('data_0813/y_train.txt', delimiter=',')
+y_val = np.loadtxt('data_0813/y_value.txt', delimiter=',')
+
+x_train = x_train[:, [1]]
+x_val = x_val[:, [1]]
+y_train = y_train[:, [1]]
+y_val = y_val[:, [1]]
+
+# np.delete(x_train, [0], axis=1)
+# np.delete(x_val, [0], axis=1)
+# np.delete(y_train, [0], axis=1)
+# np.delete(y_val, [0], axis=1)
 
 y_train = to_categorical(y_train, num_classes)
 y_val = to_categorical(y_val, num_classes)

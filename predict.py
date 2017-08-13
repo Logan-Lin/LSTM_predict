@@ -68,7 +68,7 @@ summary_file.close()
 
 # model.load_weights(filepath="data.h5")
 
-plot_model(model, to_file='save/model_' + time + '.png', show_shapes=True)
+# plot_model(model, to_file='save/model_' + time + '.png', show_shapes=True)
 
 score = model.evaluate(x_val, y_val, batch_size=64)
 

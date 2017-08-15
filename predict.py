@@ -1,48 +1,36 @@
 from keras.models import Sequential
-from keras.layers import LSTM, Dense, SimpleRNN
+from keras.layers import LSTM, Dense
+# from keras.utils import plot_model
 from keras.utils.np_utils import to_categorical
 import numpy as np
-from keras.utils import plot_model
+import random
 
-timesteps = 8
+timesteps = 16
 data_dim = 1
-num_classes = 578
+num_classes = 628
 
-batch = 64
-epoch = 1
-time = "0813_01"
+train = np.loadtxt('data/train.txt', dtype=np.int32, delimiter=',')
+test = np.loadtxt('data/train.txt', dtype=np.int32, delimiter=',')
 
-x_train = np.loadtxt('data_0813/x_train.txt', delimiter=',')
-x_val = np.loadtxt('data_0813/x_value.txt', delimiter=',')
-y_train = np.loadtxt('data_0813/y_train.txt', delimiter=',')
-y_val = np.loadtxt('data_0813/y_value.txt', delimiter=',')
+train.shape = -1,17
+test.shape = -1,17
 
-x_train = x_train[:, [1]]
-x_val = x_val[:, [1]]
-y_train = y_train[:, [1]]
-y_val = y_val[:, [1]]
-
-# np.delete(x_train, [0], axis=1)
-# np.delete(x_val, [0], axis=1)
-# np.delete(y_train, [0], axis=1)
-# np.delete(y_val, [0], axis=1)
-
+random.shuffle(train)
+x_train = train[:, :-1]
+y_train = train[:, -1]
 y_train = to_categorical(y_train, num_classes)
-y_val = to_categorical(y_val, num_classes)
 
-y_train.shape = -1, num_classes
-y_val.shape = -1, num_classes
+x_train.shape = -1,timesteps,data_dim
+y_train.shape = -1,num_classes
 
-x_train.shape = -1, timesteps, data_dim
-x_val.shape = -1, timesteps, data_dim
+x_test = test[:, :-1]
+x_test.shape = -1,timesteps,data_dim
+y_test = test[:, -1]
+y_test1 = to_categorical(y_test, num_classes)
 
-# expected input data shape: (batch_size, timesteps, data_dim)
 model = Sequential()
-model.add(LSTM(batch, return_sequences=True,
+model.add(LSTM(64, return_sequences=True,
                input_shape=(timesteps, data_dim)))
-model.add(LSTM(64, return_sequences=True))
-model.add(LSTM(64, return_sequences=True))
-model.add(LSTM(64, return_sequences=True))
 model.add(LSTM(64, return_sequences=True))
 model.add(LSTM(64))
 model.add(Dense(num_classes, activation='softmax'))
@@ -51,25 +39,29 @@ model.compile(loss='categorical_crossentropy',
               optimizer='rmsprop',
               metrics=['accuracy'])
 
-hist = model.fit(x_train, y_train,
-                 batch_size=batch, epochs=epoch)
-model.save_weights("save/data_" + time + ".h5")
+# --------------------------------------------------------
+# model.load_weights(filepath="data5.h5")
+# --------------------------------------------------------
 
-history_file = open("save/history_" + time + ".txt", "w")
-history_file.write("batch_size=" + str(batch) + "\n")
-history_file.write(str(hist.history))
-history_file.close()
+model.summary()
 
-summary = str(model.to_json())
-summary_file = open("save/summary_file_" + time + ".txt", "w")
-summary_file.write("batch_size=" + str(batch) + "\n")
-summary_file.write(summary)
-summary_file.close()
+model.fit(x_train, y_train,
+          batch_size=64, epochs=1, shuffle=True)
+          # validation_data=(x_val, y_val))
 
-# model.load_weights(filepath="data.h5")
+model.save_weights("data5.h5")
 
-# plot_model(model, to_file='save/model_' + time + '.png', show_shapes=True)
+# plot_model(model, to_file='model.png', show_shapes=True)
+score = model.evaluate(x_test, y_test1, batch_size=64)
 
-score = model.evaluate(x_val, y_val, batch_size=64)
-
+pd = model.predict(x_test, batch_size=64)
+m,n = pd.shape
+Y = []
+for i in range(m):
+    Y.append(np.argmax(pd[i]))
+mm = 0
+for i in range(m):
+    if Y[i]==y_test[i]:
+       mm = mm + 1
+print("predict: %f" % (mm/m))
 print("evaluate: %f" % (score[1]))

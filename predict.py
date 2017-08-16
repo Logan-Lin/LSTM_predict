@@ -12,19 +12,19 @@ num_classes = 628
 train = np.loadtxt('data/train.txt', dtype=np.int32, delimiter=',')
 test = np.loadtxt('data/train.txt', dtype=np.int32, delimiter=',')
 
-train.shape = -1,17
-test.shape = -1,17
+train.shape = -1, 17
+test.shape = -1, 17
 
 random.shuffle(train)
 x_train = train[:, :-1]
 y_train = train[:, -1]
 y_train = to_categorical(y_train, num_classes)
 
-x_train.shape = -1,timesteps,data_dim
-y_train.shape = -1,num_classes
+x_train.shape = -1, timesteps, data_dim
+y_train.shape = -1, num_classes
 
 x_test = test[:, :-1]
-x_test.shape = -1,timesteps,data_dim
+x_test.shape = -1, timesteps, data_dim
 y_test = test[:, -1]
 y_test1 = to_categorical(y_test, num_classes)
 
@@ -47,7 +47,7 @@ model.summary()
 
 model.fit(x_train, y_train,
           batch_size=64, epochs=1, shuffle=True)
-          # validation_data=(x_val, y_val))
+# validation_data=(x_val, y_val))
 
 model.save_weights("data5.h5")
 
@@ -55,13 +55,13 @@ model.save_weights("data5.h5")
 score = model.evaluate(x_test, y_test1, batch_size=64)
 
 pd = model.predict(x_test, batch_size=64)
-m,n = pd.shape
+m, n = pd.shape
 Y = []
 for i in range(m):
     Y.append(np.argmax(pd[i]))
 mm = 0
 for i in range(m):
-    if Y[i]==y_test[i]:
-       mm = mm + 1
-print("predict: %f" % (mm/m))
+    if Y[i] == y_test[i]:
+        mm = mm + 1
+print("predict: %f" % (mm / m))
 print("evaluate: %f" % (score[1]))

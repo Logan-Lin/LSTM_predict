@@ -1,5 +1,5 @@
 from keras.models import Sequential
-from keras.layers import LSTM, Dense
+from keras.layers import LSTM, Dense, Dropout
 # from keras.utils import plot_model
 from keras.utils.np_utils import to_categorical
 import numpy as np
@@ -8,8 +8,10 @@ import random
 timesteps = 16
 data_dim = 1
 num_classes = 628
-batch_size = 16
+batch_size = 64
+units = 64
 epochs = 10
+drop_rate = 0.2
 
 train = np.loadtxt('data/train.txt', dtype=np.int32, delimiter=',')
 test = np.loadtxt('data/train.txt', dtype=np.int32, delimiter=',')
@@ -17,7 +19,7 @@ test = np.loadtxt('data/train.txt', dtype=np.int32, delimiter=',')
 train.shape = -1, 17
 test.shape = -1, 17
 
-# random.shuffle(train)
+random.shuffle(train)
 x_train = train[:, :-1]
 y_train = train[:, -1]
 y_train = to_categorical(y_train, num_classes)
@@ -31,10 +33,14 @@ y_test = test[:, -1]
 y_test1 = to_categorical(y_test, num_classes)
 
 model = Sequential()
-model.add(LSTM(batch_size, return_sequences=True,
+model.add(LSTM(units, return_sequences=True,
                input_shape=(timesteps, data_dim)))
-model.add(LSTM(batch_size, return_sequences=True))
-model.add(LSTM(batch_size))
+model.add(LSTM(units, return_sequences=True))
+# model.add(LSTM(units, return_sequences=True))
+# model.add(LSTM(units, return_sequences=True))
+# model.add(LSTM(units, return_sequences=True))
+model.add(LSTM(units))
+model.add(Dense(int(units * 4)))
 model.add(Dense(num_classes, activation='softmax'))
 
 model.compile(loss='categorical_crossentropy',

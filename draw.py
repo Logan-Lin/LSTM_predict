@@ -38,7 +38,7 @@ def getInfo(filename):
 
 
 if __name__ == '__main__':
-    filename = "console.out"
+    filename = "1.out"
     Epoch, loss_list, acc_list = getInfo(filename)
     index = np.arange(int(Epoch), dtype=np.int32)
     plt.figure(1)

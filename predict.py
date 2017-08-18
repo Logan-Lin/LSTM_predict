@@ -14,12 +14,12 @@ epochs = 10
 drop_rate = 0.2
 
 train = np.loadtxt('data/train.txt', dtype=np.int32, delimiter=',')
-test = np.loadtxt('data/train.txt', dtype=np.int32, delimiter=',')
+test = np.loadtxt('data/test.txt', dtype=np.int32, delimiter=',')
 
 train.shape = -1, 17
 test.shape = -1, 17
 
-random.shuffle(train)
+# random.shuffle(train)
 x_train = train[:, :-1]
 y_train = train[:, -1]
 y_train = to_categorical(y_train, num_classes)
@@ -39,6 +39,7 @@ model.add(LSTM(units, return_sequences=True))
 # model.add(LSTM(units, return_sequences=True))
 # model.add(LSTM(units, return_sequences=True))
 # model.add(LSTM(units, return_sequences=True))
+model.add(Dropout(drop_rate))
 model.add(LSTM(units))
 model.add(Dense(int(units * 4)))
 model.add(Dense(num_classes, activation='softmax'))

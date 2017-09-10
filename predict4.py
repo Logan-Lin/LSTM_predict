@@ -4,16 +4,17 @@ from keras.callbacks import EarlyStopping
 import numpy as np
 import random
 
+
 def Normalization(X):
-    X[:,0] = (X[:,0]-np.min(X[:,0]))/(np.max(X[:,0])-np.min(X[:,0]))
-    X[:,0] = 2*X[:,0]-1
-    X[:,1] = (X[:,1]-np.min(X[:,1]))/(np.max(X[:,1])-np.min(X[:,1]))
-    X[:,1] = 2*X[:,1]-1
+    X[:, 0] = (X[:, 0] - np.min(X[:, 0])) / (np.max(X[:, 0]) - np.min(X[:, 0]))
+    X[:, 0] = 2 * X[:, 0] - 1
+    X[:, 1] = (X[:, 1] - np.min(X[:, 1])) / (np.max(X[:, 1]) - np.min(X[:, 1]))
+    X[:, 1] = 2 * X[:, 1] - 1
     return X
 
 
 def FindMin_Max(X):
-    return min(X[:,0]), np.max(X[:,0]), np.min(X[:,1]), np.max(X[:,1])
+    return min(X[:, 0]), np.max(X[:, 0]), np.min(X[:, 1]), np.max(X[:, 1])
 
 
 def ToRealValue(X, M):
@@ -21,14 +22,15 @@ def ToRealValue(X, M):
     X0_max = M[1]
     X1_min = M[2]
     X1_max = M[3]
-    X[:,0] = (X[:,0]+1)/2
-    X[:,0] = (X0_max-X0_min)*X[:,0]+X0_min
-    X[:,1] = (X[:,1]+1)/2
-    X[:,1] = (X1_max-X1_min)*X[:,1]+X1_min
+    X[:, 0] = (X[:, 0] + 1) / 2
+    X[:, 0] = (X0_max - X0_min) * X[:, 0] + X0_min
+    X[:, 1] = (X[:, 1] + 1) / 2
+    X[:, 1] = (X1_max - X1_min) * X[:, 1] + X1_min
     return X
 
+
 def rmse(predictions, targets):
-    return np.sqrt(np.mean((predictions-targets)**2))
+    return np.sqrt(np.mean((predictions - targets) ** 2))
 
 
 timesteps = 6

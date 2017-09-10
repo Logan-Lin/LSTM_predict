@@ -4,8 +4,9 @@ from keras.callbacks import EarlyStopping
 import numpy as np
 import random
 
+
 def rmse(predictions, targets):
-    return np.sqrt(np.mean((predictions-targets)**2))
+    return np.sqrt(np.mean((predictions - targets) ** 2))
 
 
 timesteps = 6
